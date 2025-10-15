@@ -16,6 +16,9 @@ import clusteredDeferredFullscreenFragRaw from './clustered_deferred_fullscreen.
 // Toon shader.
 import clusteredDeferredToonRaw from './clustered_deferred_toon.fs.wgsl?raw';
 
+// Bloom shader.
+import clusteredDeferredBloomRaw from './clustered_deferred_bloom.fs.wgsl?raw';
+
 import moveLightsComputeRaw from './move_lights.cs.wgsl?raw';
 import clusteringComputeRaw from './clustering.cs.wgsl?raw';
 
@@ -63,6 +66,8 @@ export const clusteredDeferredFullscreenVertSrc: string = processShaderRaw(clust
 export const clusteredDeferredFullscreenFragSrc: string = processShaderRaw(clusteredDeferredFullscreenFragRaw);
 
 export const clusteredDeferredToonSrc: string = processShaderRaw(clusteredDeferredToonRaw);
+
+export const clusteredDeferredBloomSrc: string = processShaderRaw(clusteredDeferredBloomRaw);
 
 export const moveLightsComputeSrc: string = processShaderRaw(moveLightsComputeRaw);
 export const clusteringComputeSrc: string = processShaderRaw(clusteringComputeRaw);

@@ -8,42 +8,6 @@
 @group(${bindGroup_textures}) @binding(1) var albedoTex: texture_2d<f32>;
 @group(${bindGroup_textures}) @binding(2) var normalTex: texture_2d<f32>;
 
-fn calculateEdge(index: vec2i, normal: vec3f) -> f32 {
-
-    let offsets = array<vec2i, 9>(
-        vec2i(-1, -1), vec2i(0, -1), vec2i(1, -1),
-        vec2i(-1, 0), vec2i(0,  0), vec2i(1, 0),
-        vec2i(-1, 1), vec2i(0, 1), vec2i(1, 1)
-    );
-
-    let kernelX = array<f32, 9>(
-        -1.0, 0.0, 1.0,
-        -2.0, 0.0, 2.0,
-        -1.0, 0.0, 1.0
-    );
-
-    let kernelY = array<f32, 9>(
-        -1.0, -2.0, -1.0,
-         0.0,  0.0,  0.0,
-         1.0,  2.0,  1.0
-    );
-    var gx = vec3f(0.0);
-    var gy = vec3f(0.0);
-
-    // compare normal to neighbors
-    for (var i = 0; i < 9; i++) {
-        let samples = textureLoad(normalTex, index + offsets[i], 0).xyz;
-
-        gx += samples * kernelX[i];
-        gy += samples * kernelY[i];
-    }
-
-    let edgeMag = length(gx) + length(gy);
-
-    // set edge thickness
-    return step(1.0, edgeMag);
-}
-
 @fragment
 fn main(@builtin(position) fragPos: vec4f) -> @location(0) vec4f
 {
@@ -93,28 +57,6 @@ fn main(@builtin(position) fragPos: vec4f) -> @location(0) vec4f
     let toonLevels : u32 = 3u; // Controls number of gradiations for toon shader.
     let levels = f32(max(toonLevels, 2u));
     accum = floor(accum * levels) / (levels - 1.0);
-
-    // TODO: add outlines here.
-    let edge = calculateEdge(index, normal);
-
-    // if edge detected, return black for the outline
-    if (edge > 0.0) {
-        // small offsets for RGB channels
-        let texDims : vec2<u32> = textureDimensions(albedoTex);
-        let maxCoord = texDims - vec2<u32>(1,1);
-
-        let r = textureLoad(albedoTex, vec2<u32>(clamp(u32(index.x) - 1u, 0u, maxCoord.x), u32(index.y)), 0).r;
-        let g = textureLoad(albedoTex, vec2<u32>(clamp(u32(index.x) + 1u, 0u, maxCoord.x), u32(index.y)), 0).g;
-        let b = textureLoad(albedoTex, vec2<u32>(u32(index.x), clamp(u32(index.y)+1u, 0u, maxCoord.y)), 0).b;
-
-        return vec4f(r, g, b, 1.0);
-    } 
-
-    let edgeStrength = clamp(edge * 2.0, 0.0, 1.0);
-    if (edgeStrength > 0.0) {
-        let tint = vec3f(0.1, 0.2, 0.3); 
-        return vec4f(accum * (1.0 - edgeStrength) + tint * edgeStrength, 1.0);
-    }
 
     // Multiply the fragment’s diffuse color by the accumulated light contribution.
     var finalColor = accum;

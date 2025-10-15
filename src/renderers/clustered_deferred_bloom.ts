@@ -2,9 +2,7 @@ import * as renderer from '../renderer';
 import * as shaders from '../shaders/shaders';
 import { Stage } from '../stage/stage';
 
-export class ClusteredDeferredToonRenderer extends renderer.Renderer {
-    // TODO-3: add layouts, pipelines, textures, etc. needed for Deferred here
-    // you may need extra uniforms such as the camera view matrix and the canvas resolution
+export class ClusteredDeferredBloomRenderer extends renderer.Renderer {
 
     // G Buffer.
     sceneUniformsBindGroupLayout: GPUBindGroupLayout;
@@ -29,17 +27,14 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
     deferredBindGroup: GPUBindGroup;
     deferredFullScreenPipeline: GPURenderPipeline;
 
-    // Toon Buffer.
-    toonBindGroupLayout: GPUBindGroupLayout;
-    toonBindGroup: GPUBindGroup;
-    toonPipeline: GPURenderPipeline;
+    // Bloom Buffer.
+    bloomBindGroupLayout: GPUBindGroupLayout;
+    bloomBindGroup: GPUBindGroup;
+    bloomPipeline: GPURenderPipeline;
 
     constructor(stage: Stage) {
         super(stage);
 
-        // TODO-3: initialize layouts, pipelines, textures, etc. needed for Deferred here
-        // you'll need two pipelines: one for the G-buffer pass and one for the fullscreen pass
-        // Initialise GPU texture buffers.
         this.positionTexture = renderer.device.createTexture({
             size: [renderer.canvas.width, renderer.canvas.height],
             format: "rgba16float",
@@ -224,9 +219,9 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
             }
         });
 
-        // Toon bindgroups.
-        this.toonBindGroupLayout = renderer.device.createBindGroupLayout({
-            label: "toon bind group layout",
+        // Bloom bindgroups.
+        this.bloomBindGroupLayout = renderer.device.createBindGroupLayout({
+            label: "bloom bind group layout",
             entries: [
                 { // position
                     binding: 0,
@@ -246,8 +241,8 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
             ]
         });
 
-        this.toonBindGroup = renderer.device.createBindGroup({
-            label: "toon bind group",
+        this.bloomBindGroup = renderer.device.createBindGroup({
+            label: "bloom bind group",
             layout: this.deferredBindGroupLayout,
             entries: [
                 {
@@ -265,13 +260,13 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
             ]
         });
 
-        // Toon compute pipeline.
-        this.toonPipeline = renderer.device.createRenderPipeline({
+        // Bloom compute pipeline.
+        this.bloomPipeline = renderer.device.createRenderPipeline({
             layout: renderer.device.createPipelineLayout({
-                label: "toon + clustered deferred pipeline layout",
+                label: "bloom + clustered deferred pipeline layout",
                 bindGroupLayouts: [
                     this.sceneUniformsBindGroupLayout,
-                    this.toonBindGroupLayout
+                    this.bloomBindGroupLayout
                 ]
             }),
             depthStencil: {
@@ -281,15 +276,15 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
             },
             vertex: {
                 module: renderer.device.createShaderModule({
-                    label: "toon + clustered deferred vert shader",
+                    label: "bloom + clustered deferred vert shader",
                     code: shaders.clusteredDeferredFullscreenVertSrc
                 }),
                 buffers: []
             },
             fragment: {
                 module: renderer.device.createShaderModule({
-                    label: "toon + clustered deferred frag shader",
-                    code: shaders.clusteredDeferredToonSrc,
+                    label: "bloom + clustered deferred frag shader",
+                    code: shaders.clusteredDeferredBloomSrc,
                 }),
                 targets: [
                     {
@@ -383,9 +378,9 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
         fullscreenRenderPass.end();
         // End lighting calc render pass.
 
-        // Begin toon render pass. Reads from scene.
-        const toonRenderPass = encoder.beginRenderPass({
-            label: "toon render pass",
+        // Begin bloom render pass. Reads from scene.
+        const bloomRenderPass = encoder.beginRenderPass({
+            label: "bloom render pass",
             colorAttachments: [
                 {
                     view: canvasTextureView,
@@ -401,12 +396,12 @@ export class ClusteredDeferredToonRenderer extends renderer.Renderer {
                 depthStoreOp: "store"
             }
         });
-        // Read in toon pipeline.
-        toonRenderPass.setPipeline(this.toonPipeline);
-        toonRenderPass.setBindGroup(shaders.constants.bindGroup_scene, this.sceneUniformsBindGroup)
-        toonRenderPass.setBindGroup(shaders.constants.bindGroup_textures, this.toonBindGroup);
-        toonRenderPass.draw(6);
-        toonRenderPass.end();
+        // Read in bloom pipeline.
+        bloomRenderPass.setPipeline(this.bloomPipeline);
+        bloomRenderPass.setBindGroup(shaders.constants.bindGroup_scene, this.sceneUniformsBindGroup)
+        bloomRenderPass.setBindGroup(shaders.constants.bindGroup_textures, this.bloomBindGroup);
+        bloomRenderPass.draw(6);
+        bloomRenderPass.end();
 
         renderer.device.queue.submit([encoder.finish()]);
     }
