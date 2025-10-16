@@ -41,6 +41,9 @@ export const constants = {
     maxLightsInCluster: 1024
 };
 
+// Keep lightRadius alive for eval (prevents tree-shaking)
+void constants.lightRadius;
+
 // =================================
 
 function evalShaderRaw(raw: string) {
