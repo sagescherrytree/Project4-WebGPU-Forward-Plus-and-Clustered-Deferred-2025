@@ -38,7 +38,7 @@ export const constants = {
 
     computeClustersWorkgroupSize: [8, 8, 4],
     clusterDims: [16, 16, 16],
-    maxLightsInCluster: 128
+    maxLightsInCluster: 512
 };
 
 // Keep lightRadius alive for eval (prevents tree-shaking)
