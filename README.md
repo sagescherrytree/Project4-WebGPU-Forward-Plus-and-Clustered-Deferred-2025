@@ -15,10 +15,7 @@ WebGL Forward+ and Clustered Deferred Shading
 
 ### Demo Video/GIF
 
-<video width="640" height="360" controls>
-  <source src="img/AllRenderModesDemo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+[![](img/AllRenderModesDemo.mp4)]
 
 ### Forward+ Rendering Technique v. Naive
 
