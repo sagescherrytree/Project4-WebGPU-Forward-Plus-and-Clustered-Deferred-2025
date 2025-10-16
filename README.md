@@ -5,23 +5,35 @@ WebGL Forward+ and Clustered Deferred Shading
 
 * Jacqueline (Jackie) Li
   * [LinkedIn](https://www.linkedin.com/in/jackie-lii/), [personal website](https://sites.google.com/seas.upenn.edu/jacquelineli/home), [Instagram](https://www.instagram.com/sagescherrytree/), etc.
-* Tested on: Windows 10, 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz, NVIDIA GeForce RTX 3060 Laptop GPU (6 GB)
+* Tested on: : Chrome/141.0.7390.67, : Windows NT 10.0.19045.6332, 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz, NVIDIA GeForce RTX 3060 Laptop GPU (6 GB)
+
+[Demo link](https://sagescherrytree.github.io/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred-2025/)
 
 ### Live Demo
 
-[![](img/thumb.png)](http://TODO.github.io/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred)
+[![](img/thumbnailToonOutlines.png)](https://github.com/sagescherrytree/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred-2025)
 
 ### Demo Video/GIF
 
-[![](img/video.mp4)](TODO)
+[![](img/AllRenderModesDemo.mp4)]
 
-### (TODO: Your README)
+### Forward+ Rendering Technique v. Naive
 
-*DO NOT* leave the README to the last minute! It is a crucial part of the
-project, and we will not be able to grade you without a good README.
+Using the NVidia GeForce RTX 3060 GPU, my forward+ render at 500 lights and cluster size of 1024 actually seems visually slower than naive method with the same settings.
 
-This assignment has a considerable amount of performance analysis compared
-to implementation work. Complete the implementation early to leave time!
+This is rendered with the following settings for variables:
+computeClustersWorkgroupSize: [4,4,4]
+maxLightsInCluster: 1024
+
+[![](img/ForwardSlow.mp4)]
+
+For an additional test, I changed these values:
+computeClustersWorkgroupSize: [8,8,4]
+maxLightsInCluster: 128
+
+These are the parameters that are used in the demo video.
+
+It seemed that reducing the maximum lights and increasing the workgroup size made processing each cluster faster, making forward+ run faster than naive, as it should be.
 
 ### Credits
 
