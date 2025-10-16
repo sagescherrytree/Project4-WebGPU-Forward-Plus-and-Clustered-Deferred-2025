@@ -15,7 +15,7 @@ WebGL Forward+ and Clustered Deferred Shading
 
 ### Demo Video/GIF
 
-[![](img/AllRenderModesDemo.mp4)]
+[![](img/AllRenderModesDemo.gif)]
 
 ### Forward+ Rendering Technique v. Naive
 
@@ -25,7 +25,7 @@ This is rendered with the following settings for variables:
 computeClustersWorkgroupSize: [4,4,4]
 maxLightsInCluster: 1024
 
-[![](img/ForwardSlow.mp4)]
+[![](img/ForwardSlow.gif)]
 
 For an additional test, I changed these values:
 computeClustersWorkgroupSize: [8,8,4]
