@@ -7,15 +7,18 @@ WebGL Forward+ and Clustered Deferred Shading
   * [LinkedIn](https://www.linkedin.com/in/jackie-lii/), [personal website](https://sites.google.com/seas.upenn.edu/jacquelineli/home), [Instagram](https://www.instagram.com/sagescherrytree/), etc.
 * Tested on: : Chrome/141.0.7390.67, : Windows NT 10.0.19045.6332, 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz, NVIDIA GeForce RTX 3060 Laptop GPU (6 GB)
 
-[Demo link](https://sagescherrytree.github.io/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred-2025/)
-
 ### Live Demo
+
+[Demo link](https://sagescherrytree.github.io/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred-2025/)
 
 [![](img/thumbnailToonOutlines.png)](https://github.com/sagescherrytree/Project4-WebGPU-Forward-Plus-and-Clustered-Deferred-2025)
 
 ### Demo Video/GIF
 
-[![](img/AllRenderModesDemo.mp4)]
+<video width="640" height="360" controls>
+  <source src="img/AllRenderModesDemo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
 
 ### Forward+ Rendering Technique v. Naive
 
