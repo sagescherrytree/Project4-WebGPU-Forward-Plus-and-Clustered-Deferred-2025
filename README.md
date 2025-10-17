@@ -36,8 +36,8 @@ The brunt of the forward+ rendering technique derives from splitting up the scen
 | ![](img/dd1.png) | ![](img/dd5.png) | ![](img/dd6.png) | ![](img/dd7.png) |
 |:--:|:--:|:--:|:--:|
 | Step 1: Divide view frustrum into grids, which are actually just cubes. Cubes will then become clusters. | Step 2: Use intersection test to assign lights. | Step 3: Result of Step 2 for all objects, finish compute shader execution. | Step 4: Shade each object for each light in each cluster. |
-|:--:|
-| Reference: [A Primer on Efficient Rendering Algorithms and Clustered Shading](https://www.aortiz.me/2018/12/21/CG.html) |
+
+Reference: [A Primer on Efficient Rendering Algorithms and Clustered Shading](https://www.aortiz.me/2018/12/21/CG.html)
 
 #### Step 1
 

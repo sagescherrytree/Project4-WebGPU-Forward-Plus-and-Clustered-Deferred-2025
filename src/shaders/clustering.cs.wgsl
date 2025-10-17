@@ -29,8 +29,8 @@
 // WGSL functions need the values passed as arguments, e.g.:
 
 fn screenToViewSpace(screenCoord: vec2<f32>, depthNDC: f32) -> vec3<f32> {
-    let ndcX = (screenCoord.x / cameraUnif.screenResolution.x) * 2.0 - 1.0;
-    let ndcY = (screenCoord.y / cameraUnif.screenResolution.y) * 2.0 - 1.0;
+    let ndcX = (screenCoord.x / cameraUnif.screenResolution.x);
+    let ndcY = (screenCoord.y / cameraUnif.screenResolution.y);
     let ndcZ = depthNDC;
     let ndc = vec4<f32>(ndcX, ndcY, ndcZ, 1.0);
     var viewPos = cameraUnif.invProjMat * ndc;
