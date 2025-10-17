@@ -36,6 +36,7 @@ The brunt of the forward+ rendering technique derives from splitting up the scen
 | ![](img/dd1.png) | ![](img/dd5.png) | ![](img/dd6.png) | ![](img/dd7.png) |
 |:--:|:--:|:--:|:--:|
 | Step 1: Divide view frustrum into grids, which are actually just cubes. Cubes will then become clusters. | Step 2: Use intersection test to assign lights. | Step 3: Result of Step 2 for all objects, finish compute shader execution. | Step 4: Shade each object for each light in each cluster. |
+|:--:|
 | Reference: [A Primer on Efficient Rendering Algorithms and Clustered Shading](https://www.aortiz.me/2018/12/21/CG.html) |
 
 #### Step 1
@@ -57,6 +58,10 @@ In the main loop of the compute shader (clustering.cs.wgsl), we iterate through 
 #### Step 4
 
 Finally, in the fragment shader (forward_plus.fs.wgsl), access the cluster that the current fragment is situated in, then render each portion of the scene that is within the cluster by iterating through each light and calculating its accum value. This will result in faster runtime at a larger volume of lights, as now rendering can occur in parallel, instead of having to calculate the influences iteratively like in naive.
+
+| ![](img/forwardPlusClusterVis.png) |
+|:--:|
+| A visualisation of the clusters in scene. |
 
 ![](img/forward+.gif)
 

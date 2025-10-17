@@ -73,5 +73,37 @@ fn main(in: FragmentInput, @builtin(position) fragCoord: vec4f) -> @location(0) 
     // Multiply the fragment’s diffuse color by the accumulated light contribution.
     var finalColor = diffuseColor.rgb * totalLightContrib;
 
+    // For cluster visualisation.
+    // var finalColor = generateClusterColor(clusterIdx);
+
     return vec4f(finalColor, 1.0);
+}
+
+fn generateClusterColor(clusterIndex: u32) -> vec3<f32> {
+    let hueStep = 10u;
+    let hue = f32((clusterIndex * hueStep) % 360u) / 360.0;
+
+    let c = 1.0;
+    let x = c * (1.0 - abs(fract(hue * 6.0) * 2.0 - 1.0));
+    let m = 0.0;
+
+    var r: f32;
+    var g: f32;
+    var b: f32;
+
+    if (0.0 <= hue && hue < 1.0 / 6.0) {
+        r = c; g = x; b = m;
+    } else if (1.0 / 6.0 <= hue && hue < 2.0 / 6.0) {
+        r = x; g = c; b = m;
+    } else if (2.0 / 6.0 <= hue && hue < 3.0 / 6.0) {
+        r = m; g = c; b = x;
+    } else if (3.0 / 6.0 <= hue && hue < 4.0 / 6.0) {
+        r = m; g = x; b = c;
+    } else if (4.0 / 6.0 <= hue && hue < 5.0 / 6.0) {
+        r = x; g = m; b = c;
+    } else {
+        r = c; g = m; b = x;
+    }
+
+    return vec3<f32>(r, g, b);
 }
